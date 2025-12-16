@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息管理 - 学生列表</title>
+    <!-- 引入公共样式 -->
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">学生信息管理系统</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'student_list' %}" class="active">学生管理</a></li>
+            <li><a href="{% url 'course_list' %}">课程管理</a></li>
+            <li><a href="{% url 'score_list' %}">成绩管理</a></li>
+            <li><a href="{% url 'class_analysis' %}">成绩分析</a></li>
+            <li><a href="{% url 'user_profile' %}">个人中心</a></li>
+        </ul>
+        <div class="right">
+            <a href="{% url 'user_logout' %}" class="btn btn-sm btn-outline">退出登录</a>
+        </div>
+    </nav>
+
+    <!-- 主体容器 -->
+    <div class="container">
+        <!-- 功能区：查询 + 新增 -->
+        <div class="function-area">
+            <h2>学生信息管理</h2>
+            <a href="{% url 'student_add' %}" class="btn btn-primary">新增学生</a>
+            <form method="get" action="{% url 'student_list' %}" style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+                <div class="form-group">
+                    <label>学号</label>
+                    <input type="text" name="student_id" value="{{ student_id }}" placeholder="请输入学号">
+                </div>
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input type="text" name="name" value="{{ name }}" placeholder="请输入姓名">
+                </div>
+                <div class="form-group">
+                    <label>班级</label>
+                    <input type="text" name="class_name" value="{{ class_name }}" placeholder="请输入班级">
+                </div>
+                <div class="form-group" style="align-self: end;">
+                    <button type="submit" class="btn btn-primary">查询</button>
+                    <button type="reset" class="btn btn-outline">重置</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 数据展示区：学生表格 -->
+        <div class="table-area">
+            <div class="table-container">
+                <table class="data-table" id="studentTable">
+                    <thead>
+                        <tr>
+                            <th>学号</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>班级</th>
+                            <th>年龄</th>
+                            <th>电话</th>
+                            <th>照片</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in student_list %}
+                        <tr>
+                            <td>{{ student.student_id }}</td>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.gender }}</td>
+                            <td>{{ student.class_name }}</td>
+                            <td>{{ student.age }}</td>
+                            <td>{{ student.phone|default:"无" }}</td>
+                            <td>
+                                {% if student.photo %}
+                                <img src="{{ student.photo.url }}" alt="{{ student.name }}的照片">
+                                {% else %}
+                                无
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'student_edit' student.student_id %}" class="btn btn-sm btn-outline">修改</a>
+                                <a href="{% url 'student_delete' student.student_id %}" class="btn btn-sm btn-danger" data-delete="确定要删除{{ student.name }}的信息吗？">删除</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" style="text-align: center;">暂无学生信息</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入公共JS -->
+    <script src="/static/js/common.js"></script>
+    <script>
+        // 模拟：如果需要前端渲染表格数据，可使用以下代码（实际由后端传值）
+        // const studentData = [
+        //     { student_id: "2024001", name: "张三", gender: "男", class_name: "计算机1班", age: 20, phone: "13800138000", photo: "" },
+        // ];
+        // const columns = [
+        //     { key: "student_id", label: "学号" },
+        //     { key: "name", label: "姓名" },
+        //     { key: "gender", label: "性别" },
+        //     { key: "class_name", label: "班级" },
+        //     { key: "age", label: "年龄" },
+        //     { key: "phone", label: "电话" },
+        //     { key: "photo", label: "照片" },
+        //     { key: "operation", label: "操作" },
+        // ];
+        // renderTable("studentTable", studentData, columns);
+    </script>
+</body>
+</html>

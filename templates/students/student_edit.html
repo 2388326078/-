@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息管理 - 修改学生</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">学生信息管理系统</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'student_list' %}">学生管理</a></li>
+            <li><a href="{% url 'course_list' %}">课程管理</a></li>
+            <li><a href="{% url 'score_list' %}">成绩管理</a></li>
+            <li><a href="{% url 'class_analysis' %}">成绩分析</a></li>
+            <li><a href="{% url 'user_profile' %}">个人中心</a></li>
+        </ul>
+        <div class="right">
+            <a href="{% url 'user_logout' %}" class="btn btn-sm btn-outline">退出登录</a>
+        </div>
+    </nav>
+
+    <!-- 主体容器 -->
+    <div class="container">
+        <div class="function-area" style="max-width: 600px; margin: 0 auto;">
+            <h2>修改学生</h2>
+            {% if error_msg %}
+            <div class="alert alert-error">{{ error_msg }}</div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data" data-confirm="确定要修改该学生信息吗？" onsubmit="return validateForm(this, ['name', 'class_name', 'age'])">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>学号</label>
+                    <input type="text" name="student_id" value="{{ student.student_id }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>姓名 *</label>
+                    <input type="text" name="name" value="{{ student.name }}" placeholder="请输入姓名">
+                </div>
+                <div class="form-group">
+                    <label>性别</label>
+                    <select name="gender">
+                        <option value="男" {% if student.gender == "男" %}selected{% endif %}>男</option>
+                        <option value="女" {% if student.gender == "女" %}selected{% endif %}>女</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>班级 *</label>
+                    <input type="text" name="class_name" value="{{ student.class_name }}" placeholder="请输入班级">
+                </div>
+                <div class="form-group">
+                    <label>年龄 *</label>
+                    <input type="number" name="age" min="1" value="{{ student.age }}" placeholder="请输入年龄">
+                </div>
+                <div class="form-group">
+                    <label>电话</label>
+                    <input type="text" name="phone" value="{{ student.phone|default:'' }}" placeholder="请输入电话">
+                </div>
+                <div class="form-group">
+                    <label>照片</label>
+                    {% if student.photo %}
+                    <div style="margin-bottom: 5px;">
+                        <img src="{{ student.photo.url }}" alt="{{ student.name }}的照片" style="max-width: 200px; border-radius: var(--border-radius);">
+                    </div>
+                    {% endif %}
+                    <input type="file" name="photo" accept="image/*">
+                </div>
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <a href="{% url 'student_list' %}" class="btn btn-outline">返回列表</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+</body>
+</html>

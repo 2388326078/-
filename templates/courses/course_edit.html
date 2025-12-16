@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息管理 - 修改课程</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">学生信息管理系统</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'student_list' %}">学生管理</a></li>
+            <li><a href="{% url 'course_list' %}">课程管理</a></li>
+            <li><a href="{% url 'score_list' %}">成绩管理</a></li>
+            <li><a href="{% url 'class_analysis' %}">成绩分析</a></li>
+            <li><a href="{% url 'user_profile' %}">个人中心</a></li>
+        </ul>
+        <div class="right">
+            <a href="{% url 'user_logout' %}" class="btn btn-sm btn-outline">退出登录</a>
+        </div>
+    </nav>
+
+    <!-- 主体容器 -->
+    <div class="container">
+        <div class="function-area" style="max-width: 600px; margin: 0 auto;">
+            <h2>修改课程</h2>
+            {% if error_msg %}
+            <div class="alert alert-error">{{ error_msg }}</div>
+            {% endif %}
+            <form method="post" data-confirm="确定要修改该课程信息吗？" onsubmit="return validateForm(this, ['course_name'])">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>课程编号</label>
+                    <input type="text" name="course_id" value="{{ course.course_id }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>课程名称 *</label>
+                    <input type="text" name="course_name" value="{{ course.course_name }}" placeholder="请输入课程名称">
+                </div>
+                <div class="form-group">
+                    <label>课程描述</label>
+                    <textarea name="description" rows="3" placeholder="请输入课程描述">{{ course.description|default:'' }}</textarea>
+                </div>
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <a href="{% url 'course_list' %}" class="btn btn-outline">返回列表</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息管理 - 修改成绩</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">学生信息管理系统</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'student_list' %}">学生管理</a></li>
+            <li><a href="{% url 'course_list' %}">课程管理</a></li>
+            <li><a href="{% url 'score_list' %}">成绩管理</a></li>
+            <li><a href="{% url 'class_analysis' %}">成绩分析</a></li>
+            <li><a href="{% url 'user_profile' %}">个人中心</a></li>
+        </ul>
+        <div class="right">
+            <a href="{% url 'user_logout' %}" class="btn btn-sm btn-outline">退出登录</a>
+        </div>
+    </nav>
+
+    <!-- 主体容器 -->
+    <div class="container">
+        <div class="function-area" style="max-width: 600px; margin: 0 auto;">
+            <h2>修改成绩</h2>
+            {% if error_msg %}
+            <div class="alert alert-error">{{ error_msg }}</div>
+            {% endif %}
+            <form method="post" data-confirm="确定要修改该成绩信息吗？" onsubmit="return validateForm(this, ['score'])">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>学生</label>
+                    <input type="text" value="{{ score.student.name }}({{ score.student.student_id }})" readonly>
+                </div>
+                <div class="form-group">
+                    <label>课程</label>
+                    <input type="text" value="{{ score.course.course_name }}({{ score.course.course_id }})" readonly>
+                </div>
+                <div class="form-group">
+                    <label>成绩 *</label>
+                    <input type="number" name="score" min="0" max="100" step="0.1" value="{{ score.score }}" placeholder="请输入成绩（0-100）">
+                </div>
+                <div class="form-group">
+                    <label>考试时间</label>
+                    <input type="date" name="exam_time" value="{{ score.exam_time|date:'Y-m-d'|default:'' }}">
+                </div>
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <a href="{% url 'score_list' %}" class="btn btn-outline">返回列表</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+</body>
+</html>

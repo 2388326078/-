@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息管理 - 个人中心</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">学生信息管理系统</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'student_list' %}">学生管理</a></li>
+            <li><a href="{% url 'course_list' %}">课程管理</a></li>
+            <li><a href="{% url 'score_list' %}">成绩管理</a></li>
+            <li><a href="{% url 'class_analysis' %}">成绩分析</a></li>
+            <li><a href="{% url 'user_profile' %}" class="active">个人中心</a></li>
+        </ul>
+        <div class="right">
+            <a href="{% url 'user_logout' %}" class="btn btn-sm btn-outline">退出登录</a>
+        </div>
+    </nav>
+
+    <!-- 主体容器 -->
+    <div class="container">
+        <div class="function-area" style="max-width: 600px; margin: 0 auto;">
+            <h2>个人中心</h2>
+            <div style="background-color: var(--bg-color); padding: 20px; border-radius: var(--border-radius); margin-top: 20px;">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" value="{{ user.username }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>昵称</label>
+                    <input type="text" value="{{ user.nickname|default:'未设置' }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>最后登录时间</label>
+                    <input type="text" value="{{ user.last_login|date:'Y-m-d H:i:s'|default:'未登录' }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>注册时间</label>
+                    <input type="text" value="{{ user.create_time|date:'Y-m-d H:i:s' }}" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+</body>
+</html>

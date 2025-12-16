@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息管理 - {{ title }}</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">学生信息管理系统</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'student_list' %}">学生管理</a></li>
+            <li><a href="{% url 'course_list' %}">课程管理</a></li>
+            <li><a href="{% url 'score_list' %}">成绩管理</a></li>
+            <li><a href="{% url 'class_analysis' %}" class="active">成绩分析</a></li>
+            <li><a href="{% url 'user_profile' %}">个人中心</a></li>
+        </ul>
+        <div class="right">
+            <a href="{% url 'user_logout' %}" class="btn btn-sm btn-outline">退出登录</a>
+        </div>
+    </nav>
+
+    <!-- 主体容器 -->
+    <div class="container">
+        <!-- 功能区：分析类型切换 + 导出 -->
+        <div class="function-area">
+            <h2>成绩分析</h2>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <a href="{% url 'class_analysis' %}" class="btn btn-outline {% if '班级' in title %}btn-primary{% endif %}">班级成绩分析</a>
+                <a href="{% url 'course_analysis' %}" class="btn btn-outline {% if '课程' in title %}btn-primary{% endif %}">课程成绩分析</a>
+                <a href="{% url 'student_ranking' %}" class="btn btn-outline {% if '排名' in title %}btn-primary{% endif %}">学生成绩排名</a>
+                {% if '班级' in title %}
+                <a href="{% url 'export_excel' 'class' %}" class="btn btn-primary" style="margin-left: auto;">导出Excel</a>
+                {% elif '课程' in title %}
+                <a href="{% url 'export_excel' 'course' %}" class="btn btn-primary" style="margin-left: auto;">导出Excel</a>
+                {% elif '排名' in title %}
+                <a href="{% url 'export_excel' 'student' %}" class="btn btn-primary" style="margin-left: auto;">导出Excel</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 数据展示区：分析结果表格 -->
+        <div class="table-area">
+            <div class="table-container">
+                <h3 style="margin-bottom: 10px; color: var(--primary-color);">{{ title }}</h3>
+                <table class="data-table" id="analysisTable">
+                    <thead>
+                        <tr>
+                            {% if '班级' in title %}
+                            <th>班级名称</th>
+                            <th>平均分</th>
+                            <th>最高分</th>
+                            <th>最低分</th>
+                            <th>参与人数</th>
+                            <th>成绩总条数</th>
+                            {% elif '课程' in title %}
+                            <th>课程编号</th>
+                            <th>课程名称</th>
+                            <th>平均分</th>
+                            <th>最高分</th>
+                            <th>最低分</th>
+                            <th>参与人数</th>
+                            <th>成绩总条数</th>
+                            {% elif '排名' in title %}
+                            <th>名次</th>
+                            <th>学生学号</th>
+                            <th>学生姓名</th>
+                            <th>班级</th>
+                            <th>总分</th>
+                            <th>平均分</th>
+                            <th>修课数</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in analysis_list %}
+                        <tr>
+                            {% if '班级' in title %}
+                            <td>{{ item.class_name }}</td>
+                            <td>{{ item.avg_score }}</td>
+                            <td>{{ item.max_score }}</td>
+                            <td>{{ item.min_score }}</td>
+                            <td>{{ item.student_count }}</td>
+                            <td>{{ item.score_count }}</td>
+                            {% elif '课程' in title %}
+                            <td>{{ item.course_id }}</td>
+                            <td>{{ item.course_name }}</td>
+                            <td>{{ item.avg_score }}</td>
+                            <td>{{ item.max_score }}</td>
+                            <td>{{ item.min_score }}</td>
+                            <td>{{ item.student_count }}</td>
+                            <td>{{ item.score_count }}</td>
+                            {% elif '排名' in title %}
+                            <td>{{ item.rank }}</td>
+                            <td>{{ item.student_id }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.class_name }}</td>
+                            <td>{{ item.total_score }}</td>
+                            <td>{{ item.avg_score }}</td>
+                            <td>{{ item.course_count }}</td>
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="10" style="text-align: center;">暂无数据</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+</body>
+</html>

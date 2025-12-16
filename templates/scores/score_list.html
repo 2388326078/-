@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息管理 - 成绩列表</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">学生信息管理系统</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'student_list' %}">学生管理</a></li>
+            <li><a href="{% url 'course_list' %}">课程管理</a></li>
+            <li><a href="{% url 'score_list' %}" class="active">成绩管理</a></li>
+            <li><a href="{% url 'class_analysis' %}">成绩分析</a></li>
+            <li><a href="{% url 'user_profile' %}">个人中心</a></li>
+        </ul>
+        <div class="right">
+            <a href="{% url 'user_logout' %}" class="btn btn-sm btn-outline">退出登录</a>
+        </div>
+    </nav>
+
+    <!-- 主体容器 -->
+    <div class="container">
+        <!-- 功能区：查询 + 新增 -->
+        <div class="function-area">
+            <h2>成绩信息管理</h2>
+            <a href="{% url 'score_add' %}" class="btn btn-primary">新增成绩</a>
+            <form method="get" action="{% url 'score_list' %}" style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+                <div class="form-group">
+                    <label>学生学号</label>
+                    <input type="text" name="student_id" value="{{ student_id }}" placeholder="请输入学生学号">
+                </div>
+                <div class="form-group">
+                    <label>学生姓名</label>
+                    <input type="text" name="student_name" value="{{ student_name }}" placeholder="请输入学生姓名">
+                </div>
+                <div class="form-group">
+                    <label>课程名称</label>
+                    <input type="text" name="course_name" value="{{ course_name }}" placeholder="请输入课程名称">
+                </div>
+                <div class="form-group" style="align-self: end;">
+                    <button type="submit" class="btn btn-primary">查询</button>
+                    <button type="reset" class="btn btn-outline">重置</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 数据展示区：成绩表格 -->
+        <div class="table-area">
+            <div class="table-container">
+                <table class="data-table" id="scoreTable">
+                    <thead>
+                        <tr>
+                            <th>学生学号</th>
+                            <th>学生姓名</th>
+                            <th>课程名称</th>
+                            <th>成绩</th>
+                            <th>考试时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for score in score_list %}
+                        <tr>
+                            <td>{{ score.student.student_id }}</td>
+                            <td>{{ score.student.name }}</td>
+                            <td>{{ score.course.course_name }}</td>
+                            <td>{{ score.score }}</td>
+                            <td>{{ score.exam_time|default:"无" }}</td>
+                            <td>
+                                <a href="{% url 'score_edit' score.id %}" class="btn btn-sm btn-outline">修改</a>
+                                <a href="{% url 'score_delete' score.id %}" class="btn btn-sm btn-danger" data-delete="确定要删除该成绩信息吗？">删除</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="text-align: center;">暂无成绩信息</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+</body>
+</html>

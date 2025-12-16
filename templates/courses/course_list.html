@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息管理 - 课程列表</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">学生信息管理系统</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'student_list' %}">学生管理</a></li>
+            <li><a href="{% url 'course_list' %}" class="active">课程管理</a></li>
+            <li><a href="{% url 'score_list' %}">成绩管理</a></li>
+            <li><a href="{% url 'class_analysis' %}">成绩分析</a></li>
+            <li><a href="{% url 'user_profile' %}">个人中心</a></li>
+        </ul>
+        <div class="right">
+            <a href="{% url 'user_logout' %}" class="btn btn-sm btn-outline">退出登录</a>
+        </div>
+    </nav>
+
+    <!-- 主体容器 -->
+    <div class="container">
+        <!-- 功能区：查询 + 新增 -->
+        <div class="function-area">
+            <h2>课程信息管理</h2>
+            <a href="{% url 'course_add' %}" class="btn btn-primary">新增课程</a>
+            <form method="get" action="{% url 'course_list' %}" style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+                <div class="form-group">
+                    <label>课程编号</label>
+                    <input type="text" name="course_id" value="{{ course_id }}" placeholder="请输入课程编号">
+                </div>
+                <div class="form-group">
+                    <label>课程名称</label>
+                    <input type="text" name="course_name" value="{{ course_name }}" placeholder="请输入课程名称">
+                </div>
+                <div class="form-group" style="align-self: end;">
+                    <button type="submit" class="btn btn-primary">查询</button>
+                    <button type="reset" class="btn btn-outline">重置</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 数据展示区：课程表格 -->
+        <div class="table-area">
+            <div class="table-container">
+                <table class="data-table" id="courseTable">
+                    <thead>
+                        <tr>
+                            <th>课程编号</th>
+                            <th>课程名称</th>
+                            <th>课程描述</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in course_list %}
+                        <tr>
+                            <td>{{ course.course_id }}</td>
+                            <td>{{ course.course_name }}</td>
+                            <td>{{ course.description|default:"无" }}</td>
+                            <td>
+                                <a href="{% url 'course_edit' course.course_id %}" class="btn btn-sm btn-outline">修改</a>
+                                <a href="{% url 'course_delete' course.course_id %}" class="btn btn-sm btn-danger" data-delete="确定要删除{{ course.course_name }}的信息吗？">删除</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" style="text-align: center;">暂无课程信息</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+</body>
+</html>
