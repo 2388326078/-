@@ -3,14 +3,14 @@
 作者：Yuhua
 QQ：2388326078
 作者也不想这么写，都是憨憨ai创建这么多app，其实没必要，但是项目能正常运行：
-![img.png](templates/mdimg/img.png)
-![img_1.png](templates/mdimg/img_1.png)
-![img_2.png](templates/mdimg/img_2.png)
-![img_3.png](templates/mdimg/img_3.png)
-![img_4.png](templates/mdimg/img_4.png)
-![img_5.png](templates/mdimg/img_5.png)![img_6.png](templates/mdimg/img_6.png)![img_7.png](templates/mdimg/img_7.png)
-![img_8.png](templates/mdimg/img_8.png)
-![img_9.png](templates/mdimg/img_9.png)
+![img.png](img.png)
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
+![img_4.png](img_4.png)
+![img_5.png](img_5.png)![img_6.png](img_6.png)![img_7.png](img_7.png)
+![img_8.png](img_8.png)
+![img_9.png](img_9.png)
 
 ## 1. 项目概述
 
